@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { stripe } from '@/lib/stripe'
+import { getStripe } from '@/lib/stripe'
 
 export const runtime = 'nodejs'
 
@@ -10,6 +10,16 @@ export async function POST() {
 
   if (!appUrl) {
     return NextResponse.json({ error: 'Missing APP_URL' }, { status: 500 })
+  }
+
+  let stripe
+  try {
+    stripe = getStripe()
+  } catch (e) {
+    return NextResponse.json(
+      { error: e instanceof Error ? e.message : String(e) },
+      { status: 500 }
+    )
   }
 
   const session = await stripe.checkout.sessions.create({

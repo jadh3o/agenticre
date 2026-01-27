@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { stripe } from '@/lib/stripe'
+import { getStripe } from '@/lib/stripe'
 import { signAccessToken } from '@/lib/auth'
 
 export const runtime = 'nodejs'
@@ -7,6 +7,16 @@ export const runtime = 'nodejs'
 export async function POST(req: Request) {
   const { session_id } = (await req.json().catch(() => ({}))) as { session_id?: string }
   if (!session_id) return NextResponse.json({ error: 'Missing session_id' }, { status: 400 })
+
+  let stripe
+  try {
+    stripe = getStripe()
+  } catch (e) {
+    return NextResponse.json(
+      { error: e instanceof Error ? e.message : String(e) },
+      { status: 500 }
+    )
+  }
 
   const session = await stripe.checkout.sessions.retrieve(session_id)
   if (session.payment_status !== 'paid') {
