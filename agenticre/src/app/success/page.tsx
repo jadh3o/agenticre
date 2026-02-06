@@ -1,18 +1,32 @@
-import SuccessClient from './SuccessClient'
+import type { Metadata } from "next";
+import SuccessClient from "./SuccessClient";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
+export const metadata: Metadata = {
+  title: "Welcome — You're In",
+  robots: { index: false, follow: false },
+};
 
 export default async function SuccessPage({
   searchParams,
 }: {
-  searchParams: Promise<{ session_id?: string }>
+  searchParams: Promise<{ session_id?: string }>;
 }) {
-  const { session_id } = await searchParams
+  const { session_id } = await searchParams;
 
   return (
-    <main className="min-h-screen bg-white text-slate-900">
-      <div className="mx-auto max-w-2xl px-6 py-16">
-        <h1 className="text-3xl font-semibold tracking-tight">You’re in.</h1>
-        <SuccessClient sessionId={session_id ?? null} />
-      </div>
-    </main>
-  )
+    <>
+      <Header />
+      <main className="min-h-screen bg-background text-foreground">
+        <div className="mx-auto max-w-2xl px-6 py-16">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+            {"You're in."}
+          </h1>
+          <SuccessClient sessionId={session_id ?? null} />
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
 }

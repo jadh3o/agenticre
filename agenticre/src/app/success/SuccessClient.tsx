@@ -33,10 +33,10 @@ export default function SuccessClient({ sessionId }: { sessionId: string | null 
 
   return (
     <>
-      {status === 'loading' ? <p className="mt-3 text-slate-600">Confirming payment…</p> : null}
+      {status === 'loading' ? <p className="mt-3 text-muted-foreground">Confirming payment...</p> : null}
       {status === 'error' ? <p className="mt-3 text-red-600">{error}</p> : null}
-      <p className="mt-6 text-sm text-slate-600">
-        If you’re not redirected, open the vault: <a className="underline font-semibold text-slate-900" href="/vault">/vault</a>
+      <p className="mt-6 text-sm text-muted-foreground">
+        {"If you're not redirected, open the vault: "}<a className="underline font-semibold text-foreground" href="/vault">/vault</a>
       </p>
     </>
   )
